@@ -4,12 +4,13 @@ const zlib = @import("zlib.zig");
 pub fn build(b: *std.build.Builder) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
+    const shared = b.option(bool, "shared", "Build a shared library") orelse false;
 
-    const lib = zlib.create(b, target, optimize);
+    const lib = if (shared)
+        zlib.createShared(b, target, optimize)
+    else
+        zlib.create(b, target, optimize);
     b.installArtifact(lib.step);
-
-    const lib_shared = zlib.createShared(b, target, optimize);
-    b.installArtifact(lib_shared.step);
 
     b.getInstallStep().dependOn(&b.addInstallHeaderFile("zlib/zlib.h", "zlib.h").step);
 
