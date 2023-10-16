@@ -11,6 +11,8 @@ pub fn build(b: *std.build.Builder) void {
     const lib_shared = zlib.createShared(b, target, optimize);
     b.installArtifact(lib_shared.step);
 
+    b.getInstallStep().dependOn(&b.addInstallHeaderFile("zlib/zlib.h", "zlib.h").step);
+
     const tests = b.addTest(.{
         .root_source_file = .{ .path = "src/main.zig" },
     });
