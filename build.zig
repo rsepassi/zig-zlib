@@ -13,6 +13,7 @@ pub fn build(b: *std.build.Builder) void {
     b.installArtifact(lib.step);
 
     b.getInstallStep().dependOn(&b.addInstallHeaderFile("zlib/zlib.h", "zlib.h").step);
+    b.getInstallStep().dependOn(&b.addInstallHeaderFile("zlib/zconf.h", "zconf.h").step);
 
     const tests = b.addTest(.{
         .root_source_file = .{ .path = "src/main.zig" },
