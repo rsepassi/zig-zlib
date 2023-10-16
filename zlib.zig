@@ -39,6 +39,18 @@ pub fn create(b: *std.build.Builder, target: std.zig.CrossTarget, optimize: std.
     return Library{ .step = ret };
 }
 
+pub fn createShared(b: *std.build.Builder, target: std.zig.CrossTarget, optimize: std.builtin.OptimizeMode) Library {
+    const ret = b.addSharedLibrary(.{
+        .name = "z",
+        .target = target,
+        .optimize = optimize,
+    });
+    ret.linkLibC();
+    ret.addCSourceFiles(srcs, &.{"-std=c89"});
+
+    return Library{ .step = ret };
+}
+
 const srcs = &.{
     root_path ++ "zlib/adler32.c",
     root_path ++ "zlib/compress.c",

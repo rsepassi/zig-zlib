@@ -8,6 +8,9 @@ pub fn build(b: *std.build.Builder) void {
     const lib = zlib.create(b, target, optimize);
     b.installArtifact(lib.step);
 
+    const lib_shared = zlib.createShared(b, target, optimize);
+    b.installArtifact(lib_shared.step);
+
     const tests = b.addTest(.{
         .root_source_file = .{ .path = "src/main.zig" },
     });
